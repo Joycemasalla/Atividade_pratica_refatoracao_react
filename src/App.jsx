@@ -3,7 +3,6 @@ import './App.css';
 import axios from 'axios';
 
 function App() {
-  // 1. Estado único para o formulário
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,7 +14,6 @@ function App() {
     github: ''
   });
 
-  // 2. Função genérica para todos os campos
   function handleChange(e) {
     const { name, value } = e.target;
     setFormData(prevData => ({
@@ -24,9 +22,20 @@ function App() {
     }));
   }
 
-  // 4. Submissão do formulário
   async function handleSubmit(e) {
-    e.preventDefault(); // evitar recarregamento da página
+    e.preventDefault();
+
+    // Verificar email (contém "@" e ".")
+    if (!formData.email.includes('@') || !formData.email.includes('.')) {
+      alert('Email inválido!');
+      return;
+    }
+
+    // verificar idade
+    if (isNaN(formData.age) || Number(formData.age) <= 0) {
+      alert('Idade inválida!');
+      return;
+    }
 
     try {
       const response = await axios.post('https://reqres.in/api/users', formData, {
